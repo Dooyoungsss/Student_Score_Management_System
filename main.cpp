@@ -1,9 +1,9 @@
 #include <iostream>
 #include <string>
-#include <vector> #C++에서의 1차원 배열
+#include <vector> //C++에서의 1차원 배열
 #include <algorithm>
-#include <fstream> # C++에서 파일 입출력
-#include <locale> # C++에서 로케일 설정
+#include <fstream> // C++에서 파일 입출력
+#include <locale> // C++에서 로케일 설정
 
 using namespace std;
 
@@ -30,4 +30,27 @@ void loadDataFromFile(); // 파일에서 데이터 불러오기
 int main(){
 
     return 0;
+}
+
+
+// 학생 정보 추가 함수
+void addStudent() {
+    Student newStudent;
+    cout << "----- 학생 정보 입력 -----" << endl;
+    cout << "학번: ";
+    cin >> newStudent.id; // 학번 입력한다.
+    cout << "이름: ";
+    cin >> newStudent.name; // 이름 입력한다.
+    cout << "국어 점수: ";
+    cin >> newStudent.kor; // 국어 점수 입력한다.
+    cout << "영어 점수: ";
+    cin >> newStudent.eng; // 영어 점수 입력한다.
+    cout << "수학 점수: ";
+    cin >> newStudent.math; // 수학 점수 입력한다.
+
+    // 총점과 평균 계산
+    newStudent.sum = newStudent.kor + newStudent.eng + newStudent.math; // 총점 계산
+    newStudent.average = newStudent.sum / 3.0; // 평균 계산
+
+    students.push_back(newStudent); // 벡터에 학생 정보 추가
 }
