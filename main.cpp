@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <fstream> // C++에서 파일 입출력
 #include <locale> // C++에서 로케일 설정
+#include <iomanip>
 
 using namespace std;
 
@@ -70,5 +71,48 @@ void calculateRanks() {
 
 // 전체 학생 정보 출력 함수
 void printAllStudents() {
+    //석차 기준으로 오름차순 정렬(람다 함수)
+    sort(students.begin(), students.end(), [](const Student &a, const Student &b) {
+        return a.rank < b.rank; // 석차 기준으로 비교
+    });
 
+    cout << "\n----- 전체 학생 성적 정보 -----\n";
+    cout << setw(5) << "등수"
+            << setw(10) << "학번"
+            << setw(15) << "이름"
+            << setw(10) << "국어"
+            << setw(10) << "영어"
+            << setw(10) << "수학"
+            << setw(10) << "총점"
+            << setw(10) << "평균" << endl;
+    cout << string(70, '-') << endl; // 구분선 출력
+    
+    for(auto &student : students){
+        cout << setw(5) << student.rank
+             << setw(10) << student.id
+             << setw(15) << student.name
+             << setw(10) << student.kor
+             << setw(10) << student.eng
+             << setw(10) << student.math
+             << setw(10) << student.sum
+             << fixed << setprecision(2) // 소수점 둘째 자리까지 출력
+             << setw(10) << student.average << endl;
+    }
 }
+
+// 파일에 데이터 저장 함수
+void saveDataToFile() {
+    ofstream outFile("students.txt");
+    if (!outFile.is_open()){
+        cerr << "오류: 파일을 열 수 없습니다." << endl;
+        return;
+    }
+    for (auto &s : students) {
+        outFile << s.id << " " << s.name << " " 
+                << s.kor << " " << s.eng << " "
+                << s.math << " " << s.sum << " "
+                << fixed << setprecision(2) << s.average << " "
+                << s.rank << endl; // 학생 정보를 파일에 저장
+    }
+}
+
