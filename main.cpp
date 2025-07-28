@@ -29,7 +29,43 @@ void saveDataToFile(); // 파일에 데이터 저장
 void loadDataFromFile(); // 파일에서 데이터 불러오기
 
 int main(){
+    //VSCode에서 한글 입력을 위해 로케일 설정
+    setlocale(LC_ALL, "Korean"); // 또는 "ko_KR.UTF-8"
 
+    //프로그램 시작시 파일에서 데이터 불러오기
+    loadDataFromFile();
+
+    //불러온 데이터에서 석차 계산
+    calculateRanks();
+
+    int choice = 0; // 메뉴 선택 변수
+    while (1) {
+        cout << "\n----- 학생 성적 관리 시스템 -----\n";
+        cout << "1. 학생 정보 추가\n";
+        cout << "2. 전체 학생 성적 정보 출력\n";
+        cout << "3. 데이터 저장\n";
+        cout << "4. 종료\n";
+        cout << "메뉴를 선택하세요: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                addStudent(); // 학생 정보 추가
+                calculateRanks(); // 석차 재계산
+                break;
+            case 2:
+                printAllStudents(); // 전체 학생 성적 정보 출력
+                break;
+            case 3:
+                saveDataToFile(); // 데이터 저장
+                break;
+            case 4:
+                cout << "프로그램을 종료합니다." << endl;
+                return 0; // 프로그램 종료
+            default:
+                cout << "잘못된 선택입니다. 다시 시도하세요." << endl;
+        }
+    }
     return 0;
 }
 
@@ -116,3 +152,20 @@ void saveDataToFile() {
     }
 }
 
+
+// 파일에서 데이터 불러오기 함수
+void loadDataFromFile() {
+    ifstream inFile("students.txt");
+    if(!inFile.is_open()){
+        cerr << "오류: 파일을 열 수 없습니다. 새로 시작합니다." << endl;
+        return;
+    }
+
+    students.clear(); // 기존 데이터 초기화
+    Student s;
+    while ( inFile >> s.id >> s.name >> s.kor >> s.eng >> s.math >> s.sum >> s.average >> s.rank) {
+        students.push_back(s); // 파일에서 읽은 학생 정보를 벡터에 추가
+    }
+    inFile.close(); // 파일 닫기
+    cout << "데이터가 성공적으로 불러왔습니다." << endl;
+}
